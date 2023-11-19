@@ -39,7 +39,7 @@ namespace Exercice18b
             newArray[v1] = v2;
             for (int i = v1 + 1; i < newArray.Length; i++)
             {
-                newArray[i] = numbers[i-1];
+                newArray[i] = numbers[i - 1];
             }
             return newArray;
         }
@@ -49,37 +49,72 @@ namespace Exercice18b
             {
                 throw new ArgumentException($"l'objets {value} peut pas etre null");
             }
-            // je sais pas pourquoi le prof as passee le parametre comme objet
+            // je sais pas pourquoi le prof a passee le parametre comme objet
             int[] tableau = value as int[];
             bool[] contiens = new bool[tableau.Length];
-            int montantDoublons = 0;
-            for(int i = 1;i < tableau.Length;i++)
-            {
-                if (tableau[i] == tableau[i - 1])
-                {
-                    contiens[i] = true;
-                    montantDoublons++;
-                }
-                else
-                {
-                    contiens[i] = false;
-                }
-            }
-            int[] sansDoublons = new int[tableau.Length - montantDoublons];
-            int j = 0;
-            for(int i = 0;i < tableau.Length;i++)
+            int montantSansDoublons = 0;
+            for (int i = 0; i < tableau.Length; i++)
             {
                 if (!contiens[i])
                 {
-                    sansDoublons[j] = tableau[i];
-                    j++;
+                    for (int j = i + 1; j < tableau.Length; j++)
+                    {
+                        if (tableau[i] == tableau[j])
+                        {
+                            contiens[j] = true;
+                        }
+                    }
+                    montantSansDoublons++;
+                }
+            }
+            int[] sansDoublons = new int[montantSansDoublons];
+            int k = 0;
+            for (int i = 0; i < tableau.Length; i++)
+            {
+                if (!contiens[i])
+                {
+                    sansDoublons[k] = tableau[i];
+                    k++;
                 }
             }
             return sansDoublons;
         }
         // Code de la fonction Dedup
+        public static int[] DedupUtilisantContiens(int[] talbeau)
+        {
+            int montantSansDoublons = 0;
+            for (int i = 0; i < talbeau.Length; i++)
+            {
+                if (!Contiens(talbeau, talbeau[i], i))
+                {
+                    montantSansDoublons++;
+                }
+            }
+            int[] sansDoublons = new int[montantSansDoublons];
+            int j = 0;
+            for (int i = 0; i < talbeau.Length; i++)
+            {
+                if (!Contiens(talbeau, talbeau[i], i))
+                {
+                    sansDoublons[j] = talbeau[i];
+                    j++;
+                }
+            }
+            return sansDoublons;
+        }
 
         // Code de la fonction Contains qui n'est pas demandée mais qui risque
         // d'être utile pour la fonction Dedup
+        public static bool Contiens(int[] tableau, int valeur,int fin)
+        {
+            for (int i = 0; i < fin; i++)
+            {
+                if (tableau[i] == valeur)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

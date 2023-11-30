@@ -8,16 +8,16 @@ namespace TP2
     const int CONSOLE_WIDTH = 5 * Display.CARD_WIDTH;
     // Nombre d'itérations où le joueur peut changer ses cartes (max 10 ici)
     const int NUM_DRAWS = Game.NUM_CARDS/Game.NUM_CARDS_IN_HAND;
-
+    
     static void Main(string[] args)
     {
-            int[] values = { 3, 15, 16, 24, 29 };
+       //int[] values = { 3, 15, 16, 24, 29 };
 
-            //Console.WriteLine(43 % 13 - 1);
-            //Console.WriteLine(Game.GetValueFromCardIndex(values[2]));
-            bool x = Game.HasPair(values);
-        Console.WriteLine(x);
-            Console.ReadKey();
+       //     //Console.WriteLine(43 % 13 - 1);
+       //     //Console.WriteLine(Game.GetValueFromCardIndex(values[2]));
+       //     bool x = Game.HasPair(values);
+       // Console.WriteLine(x);
+       //     Console.ReadKey();
 
 
       /////////////////////////////////////////////////////////////////

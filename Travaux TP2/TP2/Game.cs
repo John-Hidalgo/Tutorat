@@ -79,7 +79,7 @@ namespace TP2
             {
                 throw new ArgumentOutOfRangeException();
             }
-            return valeurs[(index % 13)] + 1;
+            return index % 13;
         }
 	    public static void DrawCards(int[] cardValues, bool[] selectedCards, bool[] availableCards)
         {
@@ -154,14 +154,22 @@ namespace TP2
         }
         public static bool HasPair(int[] values)
         {
-            Console.WriteLine(GetValueFromCardIndex(values[0]));
-            if (HasThreeOfAKind(values) || HasFourOfAKind(values))
+            //Console.WriteLine(GetValueFromCardIndex(values[0]));
+            if (HasFourOfAKind(values) || HasTwoPairs(values))
             {
-                return false;
+                if (HasThreeOfAKind(values))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
             }
             for (int i = 1; i < values.Length; i++)
             {
-                Console.WriteLine(GetValueFromCardIndex(values[i]));
+                //Console.WriteLine(GetValueFromCardIndex(values[i]));
                 if (GetValueFromCardIndex(values[i - 1]) == GetValueFromCardIndex(values[i]))
                 return true;
             }
@@ -184,7 +192,8 @@ namespace TP2
             int[] cardValues = new int[values.Length];
             for (int i = 0; i < values.Length; i++)
             {
-                cardValues[i] = GetValueFromCardIndex(values[i]);
+                //cardValues[i] = GetValueFromCardIndex(values[i]);
+                cardValues[i] = values[i] % 13;
             }
             int[] montant = new int[13];
             foreach (int num in cardValues)

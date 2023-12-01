@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 
 namespace TP2
@@ -146,7 +147,32 @@ namespace TP2
             int hand = GetHand (cardValues);
             Display.WriteString ($"Vous avez actuellement {Display.ConvertHandToString (hand)}", 0, Display.CARD_HEIGHT + 14, ConsoleColor.Black);
         }
-
+        public static int[] VersTableauValeurs(int[] numeros)
+        {
+            int[] valeurs = new int[numeros.Length];
+            for (int i = 0; i < numeros.Length; i++)
+            {
+                valeurs[i] = numeros[i] % 13;
+            }
+            return valeurs;
+        }
+        public static bool CompterLesRepetitions(int[] valeurs,int repetitionsVoulait)
+        {
+            int[] montant = new int[13];
+            int montantRepetitions = 0;
+            for (int i = 0; i < valeurs.Length; i++)
+            {
+                montant[valeurs[i]]++;
+            }
+            for (int i = 0; i < montant.Length; i++)
+            {
+                if (montant[i] == repetitionsVoulait)
+                {
+                    montantRepetitions++;
+                }
+            }
+            return montantRepetitions == 1;
+        }
         public static int GetHighestCard(int[] values)
         {
             if (values == null)
@@ -171,37 +197,40 @@ namespace TP2
         }
         public static bool HasPair(int[] values)
         {
-            //Console.WriteLine(GetValueFromCardIndex(values[0]));
-            if (HasFourOfAKind(values) || HasTwoPairs(values))
+            Console.WriteLine(GetValueFromCardIndex(values[0]));
+            if (HasFourOfAKind(values) || HasThreeOfAKind(values))
             {
-                if (HasThreeOfAKind(values))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-                
-            }
-            for (int i = 1; i < values.Length; i++)
-            {
-                //Console.WriteLine(GetValueFromCardIndex(values[i]));
-                if (GetValueFromCardIndex(values[i - 1]) == GetValueFromCardIndex(values[i]))
-                return true;
-            }
-            for (int i = 0; i < values.Length - 1; i++)
-            {
-                for (int j = i + 1; j < values.Length; j++)
-                {
-                    if (GetValueFromCardIndex(values[i]) == GetValueFromCardIndex(values[j]))
-                    {
-                        return true;
-                    }
-                }
-            }
+                //if (HasThreeOfAKind(values))
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                return false;
+                //}
 
-            return false;
+            }
+            int[] cardValues = new int[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                //cardValues[i] = GetValueFromCardIndex(values[i]);
+                cardValues[i] = values[i] % 13;
+            }
+            int[] montant = new int[13];
+            for (int i = 0; i < cardValues.Length; i++)
+            {
+                montant[cardValues[i]]++;
+            }
+            int montantPaires = 0;
+            for (int i = 0; i < montant.Length; i++)
+            {
+                if (montant[i] == 2)
+                {
+                    montantPaires++;
+                }
+            }
+            return montantPaires == 1;
+            //return false;
         }
 
         public static bool HasTwoPairs(int[] values)
@@ -249,25 +278,28 @@ namespace TP2
         }
         public static bool HasStraight(int[] values)
         {
-            bool dec = true;
-            for (int i = 1; i < values.Length; i++)
+            int[] cards = VersTableauValeurs(values);
+            if (cards[0] == 0 && cards[1] == 9 && cards[2] == 10 && cards[3] == 11 && cards[4] == 12)
             {
-                if (GetValueFromCardIndex(values[i]) >= GetValueFromCardIndex(values[i - 1]))
-                {
-                    dec = false;
-                }
+                return true;
             }
-            if(dec == false)
+            else if (cards[0] == 12 && cards[1] == 9 && cards[2] == 10 && cards[3] == 11 && cards[4] == 12)
             {
-                for (int i = 1; i < values.Length; i++)
+                return true;
+            }
+            else
+            {
+                //ici uitilisez le trie a bulle
+                Array.Sort(cards);
+                for (int i = 0; i < cards.Length - 1; i++)
                 {
-                    if (GetValueFromCardIndex(values[i]) <= GetValueFromCardIndex(values[i - 1]))
+                    if (cards[i] != cards[i + 1] - 1)
                     {
                         return false;
                     }
                 }
+                return true;
             }
-            return true;
         }
 
         public static bool HasFlush(int[] values)

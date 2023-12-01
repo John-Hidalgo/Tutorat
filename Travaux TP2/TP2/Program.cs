@@ -4,26 +4,60 @@ namespace TP2
 {
   class Program
   {
-        int[] cartesSelectionee = new int[5] { 0,0,0,0,0};
+
 
     // Largeur de la console
     const int CONSOLE_WIDTH = 5 * Display.CARD_WIDTH;
     // Nombre d'itérations où le joueur peut changer ses cartes (max 10 ici)
     const int NUM_DRAWS = Game.NUM_CARDS/Game.NUM_CARDS_IN_HAND;
-    
-    static void Main(string[] args)
+
+        static bool CheckForStraight(int[] cards)
+        {
+            // Check if the sequence includes Ace (0) and King (12) without sorting
+            if (HasAceKingStraight(cards))
+            {
+                return true;
+            }
+
+            // Sort the array in ascending order
+            Array.Sort(cards);
+
+            // Check for consecutive values
+            for (int i = 0; i < cards.Length - 1; i++)
+            {
+                if (cards[i] != cards[i + 1] - 1)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        static bool HasAceKingStraight(int[] cards)
+        {
+            
+            return cards.Length == 5 && cards[0] == 0 && cards[cards.Length - 1] == 12;
+        }
+        static void Main(string[] args)
     {
-       //int[] values = { 3, 15, 16, 24, 29 };
+            //{ 13, 22, 36, 24, 12 };
 
-       //     //Console.WriteLine(43 % 13 - 1);
-       //     //Console.WriteLine(Game.GetValueFromCardIndex(values[2]));
-       //     bool x = Game.HasPair(values);
-       // Console.WriteLine(x);
-       //     Console.ReadKey();
+            int[] cards = { 0, 9, 10,11, 12 }; // Example array
+
+            bool hasStraight = CheckForStraight(cards);
+
+            Console.WriteLine(hasStraight ? "There is a straight!" : "No straight found.");
+            //int[] values = { 3, 15, 16, 24, 29 };
+
+            //     //Console.WriteLine(43 % 13 - 1);
+            //     //Console.WriteLine(Game.GetValueFromCardIndex(values[2]));
+            //     bool x = Game.HasPair(values);
+            // Console.WriteLine(x);
+                 Console.ReadKey();
 
 
-      /////////////////////////////////////////////////////////////////
-      Display.Clear();
+            /////////////////////////////////////////////////////////////////
+            Display.Clear();
       Console.WindowWidth = CONSOLE_WIDTH;
 
       bool[] availableCards = new bool[Game.NUM_CARDS] ;

@@ -6,6 +6,12 @@ namespace TP2
 {
     public class Game
     {
+        string[] a = new string[6];
+
+        string da;
+        string maChaine = "";
+
+        void foo() { }
         public const int SPADE = 0;
         public const int CLUB = 1;
         public const int DIAMOND = 2;
@@ -52,23 +58,22 @@ namespace TP2
             {
                 throw new ArgumentOutOfRangeException();
             }
-            int result = 0;
-            switch (index)
+            if(index >= 0 && index <= 12)
             {
-                case int n when n >= 0 && n <= 12:
-                    result = SPADE;
-                    break;
-                case int n when n >= 13 && n <= 25:
-                    result = CLUB;
-                    break;
-                case int n when n >= 26 && n <= 38:
-                    result = DIAMOND;
-                    break;
-                case int n when n >= 39 && n <= 51:
-                    result = HEART;
-                    break;
+                return SPADE;
             }
-            return result;
+            else if (index >= 13 && index <= 25)
+            {
+                return CLUB;
+            }
+            else if (index >= 26 && index <= 38)
+            {
+                return DIAMOND;
+            }
+            else
+            {
+                return HEART;
+            }
         }
         public static int GetValueFromCardIndex(int index)
         {
@@ -91,12 +96,18 @@ namespace TP2
                 int pige;
                 do
                 {
+                    //ici je cherche une numero entre 0 et 51 c'est mon pige
+                    
                     pige = random.Next(NUM_CARDS - 1);
-                } while (!availableCards[pige]);
+                } while (!availableCards[pige]); // et je fait tant le boolean n'est pas faux
+                // c'est car je trouve que le tableau en bas est pour voir si une carte est deja afficher
+                // alors je l'affecte a mon tableau d'affichage si true(pas encore afficher)
                 if (selectedCards[i] == false)
                 {
                     cardValues[i] = pige;
                 }
+                //est maintenant je dit il est false car je l'affiche
+                //comme ca je peut pas afficher une carte qu'une fois
                 availableCards[pige] = false;
             }
         }
@@ -110,12 +121,18 @@ namespace TP2
                 return TWO_PAIRS;
             else if (HasThreeOfAKind(cardValues))
                 return THREE_OF_A_KIND;
-            else if(HasStraight(cardValues))
+            else if (HasStraight(cardValues))
                 return STRAIGHT;
-            else if(HasFlush(cardValues))
+            else if (HasFlush(cardValues))
                 return FLUSH;
-            // A COMPLETER
-            // ...
+            else if (HasFullHouse(cardValues))
+                return FULL_HOUSE;
+            else if(HasFourOfAKind(cardValues))
+                return FOUR_OF_A_KIND;
+            else if (HasStraightFlush(cardValues))
+                return STRAIGHT_FLUSH;
+            else if(HasRoyalFlush(cardValues))
+                return ROYAL_FLUSH;
             return hand;
         }
 
@@ -196,19 +213,19 @@ namespace TP2
                 cardValues[i] = values[i] % 13;
             }
             int[] montant = new int[13];
-            foreach (int num in cardValues)
+            for (int i = 0;i < cardValues.Length;i++)
             {
-                montant[num]++;
+                montant[cardValues[i]]++;
             }
-            int pairCount = 0;
-            foreach (int count in montant)
+            int montantPaires = 0;
+            for (int i = 0; i < montant.Length;i++)
             {
-                if (count == 2)
+                if (montant[i] == 2)
                 {
-                    pairCount++;
+                    montantPaires++;
                 }
             }
-            return pairCount == 2;
+            return montantPaires == 2;
         }
 
         public static bool HasThreeOfAKind(int[] values)

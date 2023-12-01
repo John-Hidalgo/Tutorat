@@ -4,6 +4,8 @@ namespace TP2
 {
   class Program
   {
+        int[] cartesSelectionee = new int[5] { 0,0,0,0,0};
+
     // Largeur de la console
     const int CONSOLE_WIDTH = 5 * Display.CARD_WIDTH;
     // Nombre d'itérations où le joueur peut changer ses cartes (max 10 ici)
@@ -24,11 +26,11 @@ namespace TP2
       Display.Clear();
       Console.WindowWidth = CONSOLE_WIDTH;
 
-      bool[] availableCards = new bool[Game.NUM_CARDS];
+      bool[] availableCards = new bool[Game.NUM_CARDS] ;
       for (int i = 0; i < availableCards.Length; i++)
         availableCards[i] = true;
 
-      int[] cardValues = new int[Game.NUM_CARDS_IN_HAND];
+      int[] cardValues = new int[Game.NUM_CARDS_IN_HAND] { 1, 1, 1, 1, 26 };
 
       bool[] selectedCards = new bool[Game.NUM_CARDS_IN_HAND];
       for (int i = 0; i < selectedCards.Length; i++)
